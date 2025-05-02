@@ -9,7 +9,7 @@ export default function MoviePage() {
   const { movie } = useLoaderData();
 
   return (
-    <section className="font-PoppinsRegular">
+    <section className="font-PoppinsRegular pb-10">
       <div className="relative sm:h-480px mt-10 rounded-40px ">
         <img
           className="w-full h-full rounded-40px"

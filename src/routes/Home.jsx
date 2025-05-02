@@ -194,7 +194,9 @@ export default function Home() {
 
       <section>
         <h3 className="font-PoppinsRegular text-32px font-semibold leading-10 tracking-tight text-grey-400 mb-6">
-          All
+          {selectedGenre
+            ? selectedGenre[0].toUpperCase() + selectedGenre.slice(1)
+            : "All"}
           <span className="font-normal text-base leading-6 ">
             {" " + "(" + movieCount.total_count + ")"}
           </span>
