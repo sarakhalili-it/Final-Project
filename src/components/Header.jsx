@@ -1,7 +1,8 @@
-export default function Header() {
+import PropTypes from "prop-types";
+export default function Header({ changeLanguage }) {
   return (
     <header className="bg-navbar ">
-      <nav className=" 2xl:max-w-max-w-8xl xl:max-w-1200px lg:max-w-4xl md:max-w-2xl sm:max-w-xl max-w-90% mx-auto py-5  ">
+      <nav className=" 2xl:max-w-max-w-8xl xl:max-w-1200px lg:max-w-4xl md:max-w-2xl sm:max-w-xl max-w-90% mx-auto py-5 flex ">
         <a href="/" className="  inline-block ">
           <svg
             width="32"
@@ -20,7 +21,24 @@ export default function Header() {
             />
           </svg>
         </a>
+        <div className="ml-auto flex space-x-4">
+          <button
+            onClick={() => changeLanguage("en")}
+            className="bg-transparent text-white px-4 py-2 rounded-md hover:bg-blue-500 transition  text-white-100"
+          >
+            EN
+          </button>
+          <button
+            onClick={() => changeLanguage("fa")}
+            className="bg-transparent text-white px-4 py-2 rounded-md hover:bg-green-500 transition text-white-100"
+          >
+            FA
+          </button>
+        </div>
       </nav>
     </header>
   );
 }
+Header.propTypes = {
+  changeLanguage: PropTypes.func.isRequired, // مشخص کردن اینکه `changeLanguage` باید یک تابع باشد
+};

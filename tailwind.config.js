@@ -116,6 +116,7 @@ export default {
       },
       fontFamily: {
         PoppinsRegular: ["PoppinsRegular", "sans-serif"],
+        Vazir: ["Vazir", "sans-serif"],
       },
       lineHeight: {
         "leading-56px": "3.5rem",

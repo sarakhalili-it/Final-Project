@@ -2,3 +2,8 @@
   font-family: PoppinsRegular;
   src: url("/src/assets/Fonts/PoppinsRegular.ttf");
 }
+
+@font-face {
+  font-family: Vazir;
+  src: url("/src/assets/Fonts/Vazir.ttf");
+}

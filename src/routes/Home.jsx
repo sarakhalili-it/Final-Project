@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import MovieList from "../components/MovieList";
 import CardSkeleton from "../components/CardSkeleton";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { useTranslation } from "react-i18next";
 
 export async function loader() {
   const geners = await getgenres();
@@ -77,18 +78,29 @@ export default function Home() {
     }
   }, [searchQuery, allMovies]);
 
+  const { t, i18n } = useTranslation();
+
   return (
-    <>
+    <section dir={i18n.language === "fa" ? "rtl" : "ltr"}>
       <section className="w-11/12 sm:w-3/5 xl:w-1/2 py-20 mb-10 bg-transparent">
         <div className="mb-6">
-          <h1 className="text-grey-50 font-semibold font-PoppinsRegular text-64px tracking-tight leading-leading-80px mb-4">
-            MovieCenter
+          <h1
+            className={`text-grey-50 font-semibold text-64px tracking-tight leading-leading-80px mb-4 ${
+              i18n.language === "fa" ? "font-Vazir" : "font-PoppinsRegular"
+            }`}
+          >
+            {t("headerTitle")}
           </h1>
-          <p className="font-PoppinsRegular text-grey-200 text-base text-justify 2xl:w-3/4">
-            List of movies and TV Shows, I,{" "}
-            <span className="text-primary-400">Pramod Poudel</span> have watched
-            till date. Explore what I have watched and also feel free to make a
-            suggestion. 😉
+          <p
+            className={`${
+              i18n.language === "fa" ? "font-Vazir" : "font-PoppinsRegular"
+            } text-grey-200 text-base text-justify 2xl:w-3/4 "`}
+          >
+            {t("headerDescription1")}{" "}
+            <span className="text-primary-400">
+              {t("headerDescriptionImportant")}
+            </span>{" "}
+            {t("headerDescription2")} 😉
           </p>
         </div>
         <div className="py-3 px-4 sm:w-3/4 lg:w-2/4 bg-black-10 rounded-xl border border-grey-700 flex justify-center items-center">
@@ -120,7 +132,7 @@ export default function Home() {
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search Movies or TV Shows"
+            placeholder={t("searchContent")}
             className="w-full bg-transparent font-PoppinsRegular border-none focus:ring-0 text-sm text-white-100 placeholder:text-gray-600 leading-4"
           />
         </div>
@@ -216,6 +228,6 @@ export default function Home() {
           <MovieList movies={movieList} />
         </InfiniteScroll>
       </section>
-    </>
+    </section>
   );
 }
