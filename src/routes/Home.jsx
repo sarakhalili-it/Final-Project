@@ -80,17 +80,34 @@ export default function Home() {
   };
 
   useEffect(() => {
-    if (searchQuery.trim() === "") {
-      setMovieList(allMovies);
-    } else {
-      setMovieList(
-        allMovies.filter((movie) =>
-          movie.title.toLowerCase().includes(searchQuery.toLowerCase())
-        )
-      );
-    }
-  }, [searchQuery, allMovies]);
+    const applySearch = async () => {
+      if (searchQuery.trim() === "") {
+        setMovieList(allMovies);
+      } else {
+        if (selectedGenre !== null) {
+          setSelectedGenre(null);
+          setPage(1);
+          setHasMore(true);
+          const allMovies = await getMovies(1);
+          setMovieList(
+            allMovies.data.filter((movie) =>
+              movie.title.toLowerCase().includes(searchQuery.toLowerCase())
+            )
+          );
+          setMovieCount(allMovies.metadata);
+          setAllMovies(allMovies.data);
+        } else {
+          setMovieList(
+            allMovies.filter((movie) =>
+              movie.title.toLowerCase().includes(searchQuery.toLowerCase())
+            )
+          );
+        }
+      }
+    };
 
+    applySearch();
+  }, [searchQuery, allMovies]);
   const { t, i18n } = useTranslation();
 
   return (
@@ -166,6 +183,7 @@ export default function Home() {
             const allMovies = await getMovies(1);
             setMovieList(allMovies.data);
             setMovieCount(allMovies.metadata);
+            setAllMovies(allMovies.data);
           }}
         >
           All
@@ -230,20 +248,26 @@ export default function Home() {
             </span>
           )}
         </h3>
-
-        <InfiniteScroll
-          dataLength={movieList.length}
-          next={fetchMoreMovies}
-          hasMore={hasMore}
-          loader={<CardSkeleton cards={4} />}
-          endMessage={
-            <p className="text-center text-gray-500 mt-4">
-              No more movies to load!
-            </p>
-          }
-        >
-          <MovieList movies={movieList} />
-        </InfiniteScroll>
+        {searchQuery.trim() !== "" && movieList.length === 0 ? (
+          <p className="text-center text-gray-500 my-4">
+            No more movies to find!
+          </p>
+        ) : (
+          <InfiniteScroll
+            className="!overflow-x-hidden"
+            dataLength={movieList.length}
+            next={fetchMoreMovies}
+            hasMore={hasMore}
+            loader={<CardSkeleton cards={4} />}
+            endMessage={
+              <p className="text-center text-gray-500 my-4">
+                No more movies to load!
+              </p>
+            }
+          >
+            <MovieList movies={movieList} />
+          </InfiniteScroll>
+        )}
       </section>
     </section>
   );
