@@ -50,19 +50,32 @@ export default function Home() {
   };
   const clickhandler = async (event) => {
     const genreName = event.target.textContent.toLowerCase().trim();
+    if (searchQuery.trim() !== "") {
+      setSearchQuery("");
+    }
 
-    setSelectedGenre(genreName);
-    setPage(1);
-    setHasMore(true);
+    if (selectedGenre === genreName) {
+      setSelectedGenre(null);
+      setPage(1);
+      setHasMore(true);
 
-    try {
-      const filteredMovies = await getMoviesByGeners(genreName, 1);
+      const allMovies = await getMovies(1);
+      setMovieList(allMovies.data);
+      setMovieCount(allMovies.metadata);
+      setAllMovies(allMovies.data);
+    } else {
+      setSelectedGenre(genreName);
+      setPage(1);
+      setHasMore(true);
 
-      setMovieList(filteredMovies.data);
-      setMovieCount(filteredMovies.metadata);
-      setAllMovies(filteredMovies.data);
-    } catch (error) {
-      console.error("Error fetching movies by genre:", error);
+      try {
+        const filteredMovies = await getMoviesByGeners(genreName, 1);
+        setMovieList(filteredMovies.data);
+        setMovieCount(filteredMovies.metadata);
+        setAllMovies(filteredMovies.data);
+      } catch (error) {
+        console.error("Error fetching movies by genre:", error);
+      }
     }
   };
 
@@ -206,12 +219,16 @@ export default function Home() {
 
       <section>
         <h3 className="font-PoppinsRegular text-32px font-semibold leading-10 tracking-tight text-grey-400 mb-6">
-          {selectedGenre
+          {searchQuery.trim()
+            ? "Search Results ..."
+            : selectedGenre
             ? selectedGenre[0].toUpperCase() + selectedGenre.slice(1)
             : "All"}
-          <span className="font-normal text-base leading-6 ">
-            {" " + "(" + movieCount.total_count + ")"}
-          </span>
+          {!searchQuery.trim() && (
+            <span className="font-normal text-base leading-6 ">
+              {" " + "(" + movieCount.total_count + ")"}
+            </span>
+          )}
         </h3>
 
         <InfiniteScroll
