@@ -1,4 +1,5 @@
 import axios from "axios";
+const apiUrl = import.meta.env.VITE_API_URL;
 const formatMovie = (movie) => {
   const {
     id,
@@ -29,8 +30,6 @@ export const getMovieById = async (id) => {
   if (!id) {
     return;
   }
-  const { data } = await axios.get(
-    `https://moviesapi.codingfront.dev/api/v1/movies/${id}`
-  );
+  const { data } = await axios.get(`${apiUrl}/movies/${id}`);
   return formatMovie(data);
 };
